@@ -496,10 +496,9 @@ export function respondBidirectionalEventToCircuitInput(
  * contract's pinned MPC response key, over the request id, block height,
  * output kind, output length and output hash the post declares, without the
  * output. A post this accepts is an outcome the MPC attested for the request
- * it names; the output it attests is checked by
- * {@link verifyRespondBidirectionalSignature}. Takes the record as read off
- * the ledger (big-endian). Malformed records return `false` rather than
- * throwing.
+ * it names; the output it attests is checked by {@link verifyAttestedOutput}.
+ * Takes the record as read off the ledger (big-endian). Malformed records
+ * return `false` rather than throwing.
  *
  * @param event - The posted record to check, as read off the ledger.
  * @param mpcResponseKey - The response key the requesting contract pinned
