@@ -7,7 +7,7 @@
 // without it), the same checks client contracts run in-circuit at claim
 // time, so the off-chain signer and the on-chain verifier are pinned against
 // each other in-process. The off-chain sifting checks
-// (`verifyRespondBidirectionalSignature`, `verifyRespondBidirectionalAttestation`)
+// (`verifyRespondBidirectionalEvent`, `verifyRespondBidirectionalAttestation`)
 // run the same tables and must agree with the circuits on every row: a post
 // they accept is a post that proves.
 
@@ -32,7 +32,7 @@ import {
   SECP256K1_ORDER,
   verifyAttestedOutput,
   verifyRespondBidirectionalAttestation,
-  verifyRespondBidirectionalSignature,
+  verifyRespondBidirectionalEvent,
 } from "../src/index.ts";
 import {
   attestRespondBidirectional,
@@ -416,15 +416,15 @@ describe("verifyRespondBidirectionalEvent32 (compiled circuit) x signAttestation
   // it is what picks one post out of the unauthenticated log, and a
   // disagreement either drops a provable post or forwards an unprovable one.
   it.each(CASES)(
-    "$name (off chain, verifyRespondBidirectionalSignature)",
+    "$name (off chain, verifyRespondBidirectionalEvent)",
     ({ event, serializedOutput, pk, expected }) => {
-      expect(verifyRespondBidirectionalSignature(serializedOutput, event, pk)).toBe(expected);
+      expect(verifyRespondBidirectionalEvent(serializedOutput, event, pk)).toBe(expected);
     },
   );
 
   it("returns false for a malformed stored signature rather than throwing", () => {
     expect(
-      verifyRespondBidirectionalSignature(
+      verifyRespondBidirectionalEvent(
         OUTPUT_32,
         { ...valid, signature: { ...valid.signature, recoveryId: 2n } },
         MPC_PUBLIC,
@@ -442,10 +442,8 @@ describe("verifyRespondBidirectionalEvent32 (compiled circuit) x signAttestation
       },
       MPC_SECRET,
     );
-    expect(verifyRespondBidirectionalSignature(Uint8Array.from([1]), attested, MPC_PUBLIC)).toBe(
-      true,
-    );
-    expect(verifyRespondBidirectionalSignature(Uint8Array.from([1, 0]), attested, MPC_PUBLIC)).toBe(
+    expect(verifyRespondBidirectionalEvent(Uint8Array.from([1]), attested, MPC_PUBLIC)).toBe(true);
+    expect(verifyRespondBidirectionalEvent(Uint8Array.from([1, 0]), attested, MPC_PUBLIC)).toBe(
       false,
     );
   });
@@ -551,7 +549,7 @@ describe("verifyRespondBidirectionalEvent0 (compiled circuit): a failure's empty
         MPC_PUBLIC,
       ),
     ).toBe(true);
-    expect(verifyRespondBidirectionalSignature(EMPTY, failed, MPC_PUBLIC)).toBe(true);
+    expect(verifyRespondBidirectionalEvent(EMPTY, failed, MPC_PUBLIC)).toBe(true);
   });
 
   it("cannot be presented as an executed success", () => {
@@ -565,9 +563,7 @@ describe("verifyRespondBidirectionalEvent0 (compiled circuit): a failure's empty
   });
 
   it("the empty output is distinct from a one-byte zero output: the digest commits to the width", () => {
-    expect(verifyRespondBidirectionalSignature(Uint8Array.from([0]), failed, MPC_PUBLIC)).toBe(
-      false,
-    );
+    expect(verifyRespondBidirectionalEvent(Uint8Array.from([0]), failed, MPC_PUBLIC)).toBe(false);
   });
 });
 

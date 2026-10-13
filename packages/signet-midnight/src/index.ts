@@ -87,7 +87,7 @@ export {
   signatureRespondedEventToSignature,
   verifyAttestedOutput,
   verifyRespondBidirectionalAttestation,
-  verifyRespondBidirectionalSignature,
+  verifyRespondBidirectionalEvent,
 } from "./ecdsa-attestation.ts";
 
 /**

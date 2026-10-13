@@ -80,7 +80,7 @@ What clients import from `@sig-net/midnight`:
 | Recognise a failed remote execution | `OutputKind` on the verified `RespondBidirectionalEvent`: `failed` or `unviable` beside an empty output (see [Handling Failure](https://github.com/sig-net/midnight-integration/blob/main/README.md#handling-failure)). |
 | Read the attested output bytes from the MPC's output cache | `MpcOutputCacheReader`: one reader per network and Signet singleton pair, over the public bucket an MPC configured with output storage writes each request's exact attested bytes to before posting, defaulting to the bucket `getMpcOutputCacheUrl` publishes for the network. `fetchSerializedOutput` yields the bytes step 5 verifies, `undefined` while the object is not in the cache (not written yet, or never written, since the cache is optional). |
 | Hand a verified attestation to your verify circuit (runtime step 5) | `respondBidirectionalEventToCircuitInput`: flips the wire event's big-endian `bigR.x` and `s` into the little-endian record `verifyRespondBidirectionalEventV1` reads. |
-| Verify attestations without the reader | `verifyRespondBidirectionalSignature`: the full check the reader applies, exposed for custom pipelines. `verifyRespondBidirectionalAttestation` checks a post's signature without the output, `verifyAttestedOutput` checks an output against an attested width and hash, and `calculateAttestedOutputHash` gives the output hash a post commits to. |
+| Verify attestations without the reader | `verifyRespondBidirectionalEvent`: the full check the reader applies, exposed for custom pipelines. `verifyRespondBidirectionalAttestation` checks a post's signature without the output, `verifyAttestedOutput` checks an output against an attested width and hash, and `calculateAttestedOutputHash` gives the output hash a post commits to. |
 | Mint attestations in your contract's unit tests | The `@sig-net/midnight/testing` entry point, see [Testing entry point](#testing-entry-point). |
 | Discover requests MPC-side (responders, background workers) | The discovery primitives: decode the signet contract's emitted notification events with `decodeSignetEventNamed(event, SignetEventName.SignBidirectionalEvent)` (or every kind at once with `decodeSignetEvent`, which throws on an undecodable payload anyone can emit, or its non-throwing sibling `tryDecodeSignetEvent`), then resolve each pointer against the named caller's own request map with `lookupSignetRequestAt` (the authenticated read). The polling loop belongs to the responder. |
 | Call the compiled protocol circuits | `pureCircuits`: the compiled pure circuits of `circuits.compact`: the non-generic circuits of `Signet.compact` under their own names, for example the notification packer, and fixed-size instances of the generic ones with the sizes in the name, for example `calculateEvmType2RequestIdV1_1_0_0_34`. Off-chain code calls these compiled artefacts, so it always agrees with what the contracts prove. |
@@ -100,7 +100,7 @@ record shape the MPC posts, so the claim path is testable in-process with no
 stack and no MPC:
 
 ```ts
-import { verifyRespondBidirectionalSignature } from "@sig-net/midnight"; // runtime
+import { verifyRespondBidirectionalEvent } from "@sig-net/midnight"; // runtime
 import { attestRespondBidirectional, secp256k1PublicKeyOf } from "@sig-net/midnight/testing"; // tests only
 
 // A real RespondBidirectionalEvent for (requestId, blockHeight, outputKind,

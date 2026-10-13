@@ -500,25 +500,25 @@ export function respondBidirectionalEventToCircuitInput(
  * Takes the record as read off the ledger (big-endian). Malformed records
  * return `false` rather than throwing.
  *
- * @param event - The posted record to check, as read off the ledger.
+ * @param respondBidirectionalEvent - The posted record to check, as read off the ledger.
  * @param mpcResponseKey - The response key the requesting contract pinned
  *   (see {@link deriveMidnightResponseKey}).
  * @returns Whether the post is a genuine attestation for the request it names.
  */
 export function verifyRespondBidirectionalAttestation(
-  event: RespondBidirectionalEvent,
+  respondBidirectionalEvent: RespondBidirectionalEvent,
   mpcResponseKey: Secp256k1Point,
 ): boolean {
   let signature: EcdsaSignature;
   let digest: Uint8Array;
   try {
-    signature = mpcSignatureToEcdsaSignature(event.signature);
+    signature = mpcSignatureToEcdsaSignature(respondBidirectionalEvent.signature);
     digest = pureCircuits.calculateSignetAttestationDigestV1(
-      event.requestId,
-      event.blockHeight,
-      event.outputKind,
-      event.serializedOutputLength,
-      event.outputHash,
+      respondBidirectionalEvent.requestId,
+      respondBidirectionalEvent.blockHeight,
+      respondBidirectionalEvent.outputKind,
+      respondBidirectionalEvent.serializedOutputLength,
+      respondBidirectionalEvent.outputHash,
     );
   } catch {
     return false;
@@ -554,19 +554,22 @@ export function verifyRespondBidirectionalAttestation(
  * throwing.
  *
  * @param serializedOutput - The serialised execution output, exact unpadded bytes.
- * @param event - The posted record to check, as read off the ledger.
+ * @param respondBidirectionalEvent - The posted record to check, as read off the ledger.
  * @param mpcResponseKey - The response key the requesting contract pinned
  *   (see {@link deriveMidnightResponseKey}).
  * @returns Whether the post is a genuine attestation of that output for the
  *   request it names.
  */
-export function verifyRespondBidirectionalSignature(
+export function verifyRespondBidirectionalEvent(
   serializedOutput: Uint8Array,
-  event: RespondBidirectionalEvent,
+  respondBidirectionalEvent: RespondBidirectionalEvent,
   mpcResponseKey: Secp256k1Point,
 ): boolean {
   return (
-    verifyAttestedOutput(serializedOutput, event.serializedOutputLength, event.outputHash) &&
-    verifyRespondBidirectionalAttestation(event, mpcResponseKey)
+    verifyAttestedOutput(
+      serializedOutput,
+      respondBidirectionalEvent.serializedOutputLength,
+      respondBidirectionalEvent.outputHash,
+    ) && verifyRespondBidirectionalAttestation(respondBidirectionalEvent, mpcResponseKey)
   );
 }

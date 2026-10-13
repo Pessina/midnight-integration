@@ -439,7 +439,7 @@ export interface SignatureRespondedEvent {
  * computed from, the output's length and hash standing in for the output,
  * which travels off chain. Emitted UNVERIFIED: verify in-circuit via
  * `verifyRespondBidirectionalEventV1` or off chain via
- * `verifyRespondBidirectionalSignature` (with the output) or
+ * `verifyRespondBidirectionalEvent` (with the output) or
  * `verifyRespondBidirectionalAttestation` (without it). Mint one with the
  * `@sig-net/midnight/testing` entry point's `attestRespondBidirectional`.
  */

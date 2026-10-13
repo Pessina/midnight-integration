@@ -5,7 +5,7 @@
 // outputs vary in size across requests, so the attestation event carries the
 // output's hash and width and the cache carries the bytes. An object holds nothing
 // but the packed output, and is UNTRUSTED until the attestation signature
-// verifies over it (`verifyRespondBidirectionalSignature`).
+// verifies over it (`verifyRespondBidirectionalEvent`).
 
 import { type DeployedNetwork, getMpcOutputCacheUrl, MidnightNetwork } from "./constants.ts";
 import type { RequestIdHex } from "./signet-requests.ts";
