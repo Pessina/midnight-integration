@@ -448,7 +448,7 @@ const expectedSigner = deriveEvmAddress(
 
    Apply the same height check, maximum update and request cleanup to `failed` and `unviable` responses, verifying their empty output at width 0. Route on the verified kind: see [Handling Failure](#handling-failure).
 
-   Preserve `lastSeen`, `heightAtRequest` and outstanding requests across upgrades. The SDK verification circuit authenticates the response but the integrating contract maintains and checks these records. See [the protocol's library rules](https://github.com/sig-net/mpc/blob/yap/bidirectional-calls-doc/doc/bidirectional_calls.md#41-library-inside-the-application-contract).
+   Preserve `lastSeen`, `heightAtRequest` and outstanding requests across upgrades. The SDK verification circuit authenticates the response but the integrating contract maintains and checks these records. See [the protocol's library rules](https://github.com/sig-net/mpc/blob/develop/doc/bidirectional_calls.md#41-library-inside-the-application-contract).
 
 ## EVM Type 2 Transactions and ABI Calldata Words
 
