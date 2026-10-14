@@ -125,7 +125,7 @@ export function getMpcRootPublicKey(networkId: DeployedNetwork): string {
 // singleton is deployed there. An empty string means "not yet deployed or
 // published" and makes getSignetContractAddress throw for that network.
 const signetContractAddresses: Record<DeployedNetwork, string> = {
-  [MidnightNetwork.Stagenet]: "5ecbb10ce05c9e55d1990048aec4c0a5669036fb1c1f5922b900880047d8e2bf",
+  [MidnightNetwork.Stagenet]: "d2a2419b5f296dae40c5681840b660f5ebab6cbd21c107e05e0464045b589517",
   [MidnightNetwork.Preview]: "",
   [MidnightNetwork.Preprod]: "",
   [MidnightNetwork.Mainnet]: "",
