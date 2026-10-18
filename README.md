@@ -427,7 +427,7 @@ const expectedSigner = deriveEvmAddress(
    ```compact
    assert(
       verifyRespondBidirectionalEventV1<1>(serializedOutput, respondBidirectionalEvent, mpcResponseKey),
-      "Invalid attestation signature"
+      "Invalid attestation or output"
    );
    const requestId = disclose(respondBidirectionalEvent.requestId);
    const height = disclose(respondBidirectionalEvent.blockHeight);

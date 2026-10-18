@@ -390,7 +390,7 @@ export circuit verifyResponse(
       disclose(respondBidirectionalEvent),
       mpcResponseKey
     ),
-    "Invalid attestation signature"
+    "Invalid attestation or output"
   );
   assert(
     respondBidirectionalEvent.outputKind == OutputKind.executed,
@@ -439,7 +439,7 @@ export circuit verifyCheckAndDoubleResponse(
       disclose(respondBidirectionalEvent),
       mpcResponseKey
     ),
-    "Invalid attestation signature"
+    "Invalid attestation or output"
   );
   assert(
     respondBidirectionalEvent.outputKind == OutputKind.executed,
@@ -479,7 +479,7 @@ export circuit verifyFailureResponse(
       disclose(respondBidirectionalEvent),
       mpcResponseKey
     ),
-    "Invalid attestation signature"
+    "Invalid attestation or output"
   );
   const outputKind = disclose(respondBidirectionalEvent.outputKind);
   assert(
